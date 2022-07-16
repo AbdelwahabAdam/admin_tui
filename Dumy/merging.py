@@ -78,9 +78,9 @@ class MainForm(npyscreen.FormBaseNew):
         self.parentApp.switchForm(None)
 
     def change_forms(self, *args, **keywords):
-        if self.name == "Screen 1":
+        if self.name == "Navigate 1":
             change_to = "SECOND"
-        elif self.name == "Screen 2":
+        elif self.name == "Navigate 2":
             change_to = "THIRD"
         else:
             change_to = "MAIN"
@@ -89,13 +89,15 @@ class MainForm(npyscreen.FormBaseNew):
 ### y = 30
 ### x = 119
 
-############################### Start point  ####################################
-### each navigation panal will be in seperate form
+
+
+
+############################### Start poing  ####################################
 class MainAllForms(npyscreen.NPSAppManaged):
     def onStart(self):
-        self.addForm("MAIN",       MainForm, name="Screen 1", color="IMPORTANT",)
-        self.addForm("SECOND",     MainForm, name="Screen 2", color="WARNING",  )
-        self.addForm("THIRD", MainForm, name="Screen 3", color="CRITICAL",)
+        self.addForm("MAIN",       MainForm, name="Navigate 1", color="DANGER",)
+        self.addForm("SECOND",     MainForm, name="Navigate 2", color="GOODHL",  )
+        self.addForm("THIRD", MainForm, name="Navigate 3", color="CAUTION",)
         
     def onCleanExit(self):
         npyscreen.notify_wait("Goodbye!")

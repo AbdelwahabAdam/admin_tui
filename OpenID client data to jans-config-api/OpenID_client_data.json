@@ -1,0 +1,8 @@
+{
+    "redirectUris": "https://jans.io/cb\\nwww.google.com\\nwww.yahoo.com\\n",
+    "displayName": "Test Client",
+    "clientSecret": "TopSecret",
+    "grantTypes": "authorization_code\\nimplicit\\nrefresh_token\\ndata3\\ndata4\\n\\n",
+    "Date": "Sun Jul 24 00:00:00 2022",
+    "Filename": "G:\\\\GLUU\\\\admin_tui\\\\To_git\\\\OpenID client data to jans-config-api\\\\empty_form_empty_file.PNG"
+}
