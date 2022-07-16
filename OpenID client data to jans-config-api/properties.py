@@ -9,7 +9,7 @@ class Form3(npyscreen.ActionForm):
         self.add_handlers({"^T": self.change_forms})
         y, x = self.useable_space()
         ####################   Title of the screen      
-        self.Title = self.add(npyscreen.TitleText, name="Jassan admin 3", value=None, editable = None)       
+        self.Title = self.add(npyscreen.TitleText, name="Janssen admin 3", value=None, editable = None)       
 
     def on_ok(self):
         self.parentApp.switchForm(None)
@@ -32,7 +32,7 @@ class Form2(npyscreen.ActionForm):
         self.add_handlers({"^T": self.change_forms})
         y, x = self.useable_space()
         ####################   Title of the screen      
-        self.Title = self.add(npyscreen.TitleText, name="Jassan admin 2", value=None, editable = None)       
+        self.Title = self.add(npyscreen.TitleText, name="Janssen admin 2", value=None, editable = None)       
 
     def on_ok(self):
         self.parentApp.switchForm(None)
@@ -110,7 +110,7 @@ class MainApp(npyscreen.ActionForm):
 
     def create (self):
         self.add_handlers({"^T": self.change_forms})
-        self.Title = self.add(npyscreen.TitleText, name="Jassan admin 1", value=None, editable = None,color='CAUTION')       
+        self.Title = self.add(npyscreen.TitleText, name="Janssen admin 1", value=None, editable = None,color='CAUTION')       
         self.Options = Options_ov()
         # just for convenience so we don't have to keep writing Options.options
         options = self.Options.options
