@@ -6,11 +6,14 @@ from prompt_toolkit.application import Application
 from prompt_toolkit.key_binding import KeyBindings
 from prompt_toolkit.layout.containers import HSplit, Window, VSplit, FloatContainer, Float
 from prompt_toolkit.layout.controls import FormattedTextControl, BufferControl
-from prompt_toolkit.layout.layout import Layout
+from prompt_toolkit.layout.layout import Layout 
+from prompt_toolkit.layout import Dimension, HSplit, Layout, ScrollablePane
+
 from prompt_toolkit.buffer import Buffer
 from prompt_toolkit.document import Document
 from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.layout.menus import CompletionsMenu
+from prompt_toolkit.shortcuts import input_dialog
 
 from prompt_toolkit.widgets import (
     Box,
@@ -86,14 +89,15 @@ radios = RadioList(
     ]
 )
 
-left_top = Window(BufferControl(Buffer(document=Document(
-    'Auto Complete : '), completer=animal_completer, complete_while_typing=True)))
+left_top = Frame(Label(text=f"label"), width=Dimension())
 
 
 left_bottom = Window(BufferControl(Buffer(document=Document('Normal Text '))))
 
 
-right_top = Frame(title="Radio list", body=radios)
+right_top = input_dialog(
+    title='Input dialog example',
+    text='Please type your name:')
 
 
 right_bottom = Frame(
@@ -109,7 +113,7 @@ body = FloatContainer(
             VSplit(
                 [
                     # Window(FormattedTextControl("LEFT UP")),
-                    left_top,
+                   left_top,
                     Window(width=1, char="|"),
                     right_top,
                     # Window(FormattedTextControl("Right UP")),

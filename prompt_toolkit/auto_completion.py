@@ -89,7 +89,8 @@ def _(event):
 
 
 # The `Application`
-application = Application(layout=Layout(body), key_bindings=kb, full_screen=True)
+application = Application(layout=Layout(
+    body), key_bindings=kb, full_screen=True)
 
 
 def run():
