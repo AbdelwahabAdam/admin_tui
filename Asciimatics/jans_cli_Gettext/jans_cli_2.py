@@ -18,9 +18,14 @@ import os
 
 language = 'en'  ### en + de
 
-current_locale, encoding = locale.getdefaultlocale()
-language = gettext.translation (language, 'locale/', languages=[language] )
-language.install()
+try:
+    current_locale, encoding = locale.getdefaultlocale()
+    language = gettext.translation (language, 'locale/', languages=[language] )
+    language.install()
+except:
+    pass
+
+_ = gettext.gettext
 
 
 
@@ -40,9 +45,9 @@ class CLIFrame(Frame):
                                    screen.height,
                                    screen.width,
                                    has_border=True,
-                                   can_scroll=True,
+                                   can_scroll=False,
                                    )
-        
+        self.set_theme("bright")
         self.title = title
         self.layout = Layout([100], fill_frame=True)
         self.add_layout(self.layout)
@@ -80,39 +85,7 @@ class CLIFrame(Frame):
 
 
 
-    def process_event(self, event):
-        # Handle dynamic pop-ups now.
-        if (event is not None and isinstance(event, MouseEvent) and
-                event.buttons == MouseEvent.DOUBLE_CLICK):
-            # By processing the double-click before Frame handling, we have absolute coordinates.
-            options = [
-                ("Default", self._set_default),
-                ("Green", self._set_green),
-                ("Monochrome", self._set_mono),
-                ("Bright", self._set_bright),
-            ]
-            if self.screen.colours >= 256:
-                options.append(("Red/white", self._set_tlj))
-            self._scene.add_effect(PopupMenu(self.screen, options, event.x, event.y))
-            event = None
 
-        # Pass any other event on to the Frame and contained widgets.
-        return super(CLIFrame, self).process_event(event)
-
-    def _set_default(self):
-        self.set_theme("default")
-
-    def _set_green(self):
-        self.set_theme("green")
-
-    def _set_mono(self):
-        self.set_theme("monochrome")
-
-    def _set_bright(self):
-        self.set_theme("bright")
-
-    def _set_tlj(self):
-        self.set_theme("tlj256")
 
 
 class OpenIDClientForm(CLIFrame):
