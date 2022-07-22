@@ -2,21 +2,24 @@
 
 import sys
 from asciimatics.widgets import Frame, ListBox, Layout, Label, Divider, Text, \
-    Button, TextBox, Widget, CheckBox, DropdownList, ListBox, RadioButtons
+    Button, TextBox, Widget, CheckBox, DropdownList, ListBox, RadioButtons , PopupMenu
 from asciimatics.widgets.popupdialog import PopUpDialog
 
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 from asciimatics.exceptions import ResizeScreenError, NextScene, StopApplication
 # from my_checkbox import checkBoxList
+from asciimatics.event import MouseEvent
 
 import locale
 import gettext
 import os
 
-current_locale, encoding = locale.getdefaultlocale()
 
-language = gettext.translation ('de', 'locale/', languages=['de'] )
+language = 'en'  ### en + de
+
+current_locale, encoding = locale.getdefaultlocale()
+language = gettext.translation (language, 'locale/', languages=[language] )
 language.install()
 
 
@@ -67,15 +70,49 @@ class CLIFrame(Frame):
 
     def checkBoxButtons(self,name,items):
         for i, o in enumerate(items):
-            label = "{}:".format(name) if i==0 else _('Select Many')
+            label = "{}:".format(name) if i==0 else _('')
             self.layout.add_widget(CheckBox(label=label, text=o,  name=_("responseTypes:").format(o), on_focus=self.update_help))
-        self.layout.add_widget(Divider())
 
 
     def radionButtons(self,name,items):
         label = "{}:".format(name) if name else _('Select One')
         self.layout.add_widget(RadioButtons(items,label=label,  name=_("radioName:"), on_focus=self.update_help))
-        self.layout.add_widget(Divider())
+
+
+
+    def process_event(self, event):
+        # Handle dynamic pop-ups now.
+        if (event is not None and isinstance(event, MouseEvent) and
+                event.buttons == MouseEvent.DOUBLE_CLICK):
+            # By processing the double-click before Frame handling, we have absolute coordinates.
+            options = [
+                ("Default", self._set_default),
+                ("Green", self._set_green),
+                ("Monochrome", self._set_mono),
+                ("Bright", self._set_bright),
+            ]
+            if self.screen.colours >= 256:
+                options.append(("Red/white", self._set_tlj))
+            self._scene.add_effect(PopupMenu(self.screen, options, event.x, event.y))
+            event = None
+
+        # Pass any other event on to the Frame and contained widgets.
+        return super(CLIFrame, self).process_event(event)
+
+    def _set_default(self):
+        self.set_theme("default")
+
+    def _set_green(self):
+        self.set_theme("green")
+
+    def _set_mono(self):
+        self.set_theme("monochrome")
+
+    def _set_bright(self):
+        self.set_theme("bright")
+
+    def _set_tlj(self):
+        self.set_theme("tlj256")
 
 
 class OpenIDClientForm(CLIFrame):
@@ -85,7 +122,6 @@ class OpenIDClientForm(CLIFrame):
         self.layout.add_widget(Text(_("Display Name:"), _("displayName"), on_focus=self.update_help))
         self.layout.add_widget(Text(_("Client Secret:"), _("clientSecret"), on_focus=self.update_help))
         self.layout.add_widget(TextBox(label=_("Redirect Uris:"), name=_("redirectUris"), height=3, on_focus=self.update_help, as_string=True))
-        self.layout.add_widget(Divider())
 
         self.checkBoxButtons(name=_('responseTypes'),items=(_('code'), _('token'), _('id_token')))
         self.radionButtons(name=_("radio"),items=[(_("Option 1"), 1),(_("Option 2"), 2),(_("Option 3"), 3)])
@@ -112,13 +148,15 @@ class TestForm(CLIFrame):
         self.layout.add_widget(Text(_("Test Name :"), _("testName"), on_focus=self.update_help))
         self.fix()
 
+
+
 def jans_cli_app(screen, scene):
     scenes = [
         Scene([OpenIDClientForm(screen)], -1, name=_("OpenIDClientForm")),
         Scene([TestForm(screen)], -1, name=_("Test")),
     ]
-
     screen.play(scenes, stop_on_resize=True, start_scene=scene, allow_int=True)
+
 
 last_scene = None
 
