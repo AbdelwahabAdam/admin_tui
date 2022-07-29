@@ -1,11 +1,17 @@
 import locale
-import gettext
+import gettext as _
 import os
 
-current_locale, encoding = locale.getdefaultlocale()
+lang = input ("enter lang")
 
-language = gettext.translation ('ar', 'locale/', languages=['ar'] )
-language.install()
+# if lang == 'en':
+#     current_locale, encoding = locale.getdefaultlocale()
+
+# else :
+#     current_locale, encoding = locale.getdefaultlocale()
+
+#     language = _.translation ('ar', 'locale/', languages=['ar'] )
+#     language.install()
 
 print(_("Text1"))
 print(_("Text2"))

@@ -20,41 +20,71 @@ help_text_dict = {
 
 class CustomTextInput (TextInput):
 
-    def _key_printable(self, event: events.Key):
-        """Handle all printable keys"""
-        if self.name == 'redirectUris':
-            if event.key == '*':
-                self.value = (
-                    self.value[: self._cursor_position]
-                    + '\n'
-                    + self.value[self._cursor_position:]
-                )
-            else:
-                self.value = (
-                    self.value[: self._cursor_position]
-                    + event.key
-                    + self.value[self._cursor_position:]
-                )
-        else:
-            self.value = (
-                self.value[: self._cursor_position]
-                + event.key
-                + self.value[self._cursor_position:]
-            )
+    # def _key_printable(self, event: events.Key):
+    #     """Handle all printable keys"""
+    #     if self.name == 'redirectUris':
+    #         # self.value = str(event.key)
+    #         if event.key == '*' : ### TODO Enter is not defined here!! 
+    #             self.value = (
+    #                 self.value[: self._cursor_position]
+    #                 + 'k'
+    #                 + self.value[self._cursor_position:]
+    #             )
+    #         else:
+    #             self.value = (
+    #                 self.value[: self._cursor_position]
+    #                 + event.key
+    #                 + self.value[self._cursor_position:]
+    #             )
+    #     else:
+    #         # self.value = str(event.key)
+    #         self.value = (
+    #             self.value[: self._cursor_position]
+    #             + event.key
+    #             + self.value[self._cursor_position:]
+    #         )
 
-        if not self._cursor_position > len(self.value):
-            self._cursor_position += 1
-            self._update_offset_right()
+    #     if not self._cursor_position > len(self.value):
+    #         self._cursor_position += 1
+    #         self._update_offset_right()
 
     async def on_enter(self) -> None:
         self.border = 'True'
         self.wid_name = self.name
         await self.emit(ValueBarChange(self))
-
+        
     async def on_leave(self) -> None:
         self.border = 'False'
         await self.emit(ValueBarChange(self))
 
+    def _cursor_enter(self):
+        """Handle key press enter"""
+        # self.value += str(self._cursor_position)\
+        if self.placeholder == 'long' :
+            self.value = (self.value[: self._cursor_position]+ '\n')
+            self._cursor_position +=1
+                                                                                                
+    async def on_key(self, event: events.Key) -> None:
+
+        BACKSPACE = "ctrl+h"
+        if event.key == "left":
+            self._cursor_left()
+        elif event.key == "right":
+            self._cursor_right()
+        elif event.key == "home":
+            self._cursor_home()
+        elif event.key == "end":
+            self._cursor_end()
+        elif event.key == BACKSPACE:
+            self._key_backspace()
+            await self._emit_on_change(event)
+        elif event.key == "delete":
+            self._key_delete()
+            await self._emit_on_change(event)
+            #----------------------------- ENTER KEY TRY -----------------#
+        elif event.key == "enter":
+            self._cursor_enter()
+            #----------------------------- ENTER KEY TRY -----------------#
     def render(self) -> RenderableType:
         """
         Produce a Panel object containing placeholder text or value
@@ -89,10 +119,12 @@ class CustomTextInput (TextInput):
             height=7 if self.placeholder == 'long' else 3,
             width=80,
             style=self.style or "",
-            border_style="green" if self.border == 'True' else "blue",
+            border_style="white" if self.has_focus else  "green" if self.border == 'True' else "blue",
             box=rich.box.HEAVY if self.has_focus else rich.box.ROUNDED,
 
         )
+
+
 # ----------------------------------------------------------------------------------#
 
 
@@ -107,3 +139,8 @@ class ValueBarChange(Message):
         #     sender.value = help_text_dict[sender.name]
         # else:
         #     sender.value = ''
+
+
+
+
+
