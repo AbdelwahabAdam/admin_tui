@@ -109,24 +109,20 @@ right_bottom = Frame(
 body = FloatContainer(
     content=HSplit(
         [
-            Window(FormattedTextControl(top_text), height=2, style="reverse"),
             VSplit(
                 [
-                    # Window(FormattedTextControl("LEFT UP")),
-                   left_top,
-                    Window(width=1, char="|"),
-                    right_top,
-                    # Window(FormattedTextControl("Right UP")),
+                   VSplit([Label(text='test wig', width=len('title')+1)], height=1),
+                   Window(width=6, char=" "),
+                   VSplit([Label(text='test wig', width=len('title')+1)], height=1),
+
                 ]
             ),
             Window(height=1, char="-"),  # Horizontal line in the middle.
             VSplit(
                 [
-                    left_bottom,
-                    # Window(FormattedTextControl("left Down")),
-                    Window(width=1, char="|"),
-                    right_bottom,
-                    # Window(FormattedTextControl("right Down")),
+                     VSplit([Label(text='test wig', width=len('title')+1)], height=1),
+                    Window(width=6, char=" "),
+                   VSplit([Label(text='test wig', width=len('title')+1)], height=1),
                 ]
             ),
 

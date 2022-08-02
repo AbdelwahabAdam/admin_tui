@@ -8,6 +8,32 @@ from prompt_toolkit.key_binding import KeyBindings
 from prompt_toolkit.key_binding.bindings.focus import focus_next, focus_previous
 from prompt_toolkit.layout import Dimension, HSplit, Layout, ScrollablePane
 from prompt_toolkit.widgets import Frame, Label, TextArea
+from table import *
+
+
+table = [
+    [Label('Cliend ID'), Label('Client Name'), Label(
+        'Grant Type'), Label('Access Token')],
+    [Label('Cliend ID'), Label('Client Name'), Label(
+        'Grant Type'), Label('Access Token')],
+    [Label('Cliend ID'), Label('Client Name'), Label(
+        'Grant Type'), Label('Access Token')],
+    [Label('Cliend ID'), Label('Client Name'), Label(
+        'Grant Type'), Label('Access Token')],
+]
+
+# # table = TextArea(txt2)
+
+# layout = Layout(
+#     Box(
+#         Table(
+#             table=table,
+#             column_width=D.exact(15),
+#             column_widths=[None],
+#             borders=DoubleBorder),
+#         padding=1,
+#     ),
+# )
 
 
 def main():
@@ -16,15 +42,13 @@ def main():
         ScrollablePane(
             HSplit(
                 [
-                
-                    Frame(Label(text=f"label"), width=Dimension()),
-                    Frame(TextArea(text=f"textarea"), width=Dimension()),
-                    Frame(Label(text=f"label"), width=Dimension()),
-                    Frame(TextArea(text=f"textarea"), width=Dimension())
+                    Table(
+                        table=table,
+                        column_width=D.exact(15),
+                        borders=ThickBorder),
                 ]
             )
         )
-        # ScrollablePane(HSplit([TextArea(text=f"label-{i}") for i in range(20)]))
     )
 
     layout = Layout(container=root_container)
